@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f2">
+  <meta name="description" content="은혜교회에서 함께한 순간을 사진으로 나눕니다.">
+  <title>교회 앨범 | 은혜교회</title>
+  <style>
+    :root { --ink:#202a26; --muted:#68716c; --green:#31594b; --cream:#f8f7f2; --line:#e5e7df; --white:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--cream); color:var(--ink); font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.65; }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+    .wrap { width:min(1120px,calc(100% - 48px)); margin:auto; }
+    header { height:78px; display:flex; align-items:center; border-bottom:1px solid rgba(32,42,38,.08); background:var(--cream); }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:750; font-size:19px; letter-spacing:-.04em; }
+    .brand-mark { display:grid; place-items:center; width:35px; height:35px; border-radius:50%; background:var(--green); color:#fff; font-family:Georgia,serif; font-size:20px; }
+    .links { display:flex; align-items:center; gap:30px; color:#4f5b54; font-size:14px; }
+    .links a:hover,.links a[aria-current="page"] { color:var(--green); }
+    .nav-cta { padding:10px 17px; border-radius:999px; background:var(--green); color:#fff!important; }
+    main { padding:76px 0 90px; }
+    .eyebrow { color:var(--green); font-size:13px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; }
+    .intro { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:30px; }
+    h1 { margin:7px 0 9px; font-size:clamp(38px,6vw,62px); line-height:1.16; letter-spacing:-.065em; }
+    .intro p { max-width:470px; margin:0; color:var(--muted); font-size:15px; }
+    .toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:28px 0 22px; }
+    .filters { display:flex; gap:8px; flex-wrap:wrap; }
+    .filter { min-height:39px; padding:0 16px; border:1px solid var(--line); border-radius:999px; background:transparent; color:#536058; cursor:pointer; font-size:13px; }
+    .filter:hover { border-color:#a8b9aa; }
+    .filter[aria-pressed="true"] { border-color:var(--green); background:var(--green); color:#fff; }
+    .count { flex:none; color:var(--muted); font-size:13px; }
+    .gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:start; gap:18px; }
+    .photo-card { display:block; width:100%; overflow:hidden; padding:0; border:1px solid var(--line); border-radius:17px; background:var(--white); text-align:left; cursor:zoom-in; transition:transform .18s ease,box-shadow .18s ease; }
+    .photo-card:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(35,50,40,.09); }
+    .photo-card[hidden] { display:none; }
+    .photo-card img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; background:#e7ebe4; }
+    .photo-card:nth-child(4n+2) img { aspect-ratio:4/4.6; }
+    .photo-info { display:block; padding:16px 18px 18px; }
+    .photo-title { display:block; font-size:16px; font-weight:700; letter-spacing:-.035em; }
+    .photo-meta { display:block; margin-top:4px; color:var(--muted); font-size:12px; }
+    .notice { margin:22px 0 0; color:var(--muted); font-size:12px; }
+    footer { padding:28px 0 36px; border-top:1px solid var(--line); color:#768078; font-size:12px; }
+    .footer-inner { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+    dialog { width:min(1000px,calc(100% - 32px)); max-width:none; max-height:calc(100% - 32px); padding:0; overflow:visible; border:0; border-radius:18px; background:#111713; color:#fff; box-shadow:0 24px 80px rgba(0,0,0,.35); }
+    dialog::backdrop { background:rgba(14,20,17,.82); backdrop-filter:blur(4px); }
+    .viewer { position:relative; display:grid; grid-template-rows:minmax(0,1fr) auto; min-height:300px; max-height:calc(100vh - 32px); }
+    .viewer img { display:block; width:100%; height:min(70vh,760px); object-fit:contain; background:#111713; }
+    .viewer-info { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:15px 20px 18px; }
+    .viewer-info strong { display:block; font-size:15px; }
+    .viewer-info span { display:block; margin-top:2px; color:#c3ccc5; font-size:12px; }
+    .viewer-controls { display:flex; gap:8px; }
+    .viewer-controls button,.viewer-close { display:grid; place-items:center; width:42px; height:42px; border:1px solid rgba(255,255,255,.22); border-radius:50%; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
+    .viewer-controls button:hover,.viewer-close:hover { background:rgba(255,255,255,.18); }
+    .viewer-close { position:absolute; z-index:1; top:14px; right:14px; font-size:23px; }
+    @media (max-width:760px) {
+      .wrap { width:min(100% - 36px,560px); }
+      header { height:68px; }
+      .links { gap:15px; font-size:12px; }
+      .links a:not(.nav-cta):not([href="album.html"]) { display:none; }
+      main { padding:56px 0 64px; }
+      .intro { align-items:start; flex-direction:column; gap:10px; }
+      .toolbar { align-items:start; flex-direction:column; }
+      .gallery { grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
+      .photo-card { border-radius:13px; }
+      .photo-info { padding:12px 13px 14px; }
+      .photo-title { font-size:14px; }
+      .photo-meta { font-size:11px; }
+      .viewer-info { align-items:start; flex-direction:column; }
+      .viewer-controls { position:absolute; right:14px; bottom:14px; }
+    }
+    @media (max-width:390px) { .gallery { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav wrap" aria-label="주요 메뉴">
+      <a class="brand" href="index.html#home"><span class="brand-mark" aria-hidden="true">✝</span><span>은혜교회</span></a>
+      <div class="links"><a href="index.html#about">교회 소개</a><a href="index.html#worship">예배 안내</a><a href="album.html" aria-current="page">교회 앨범</a><a href="index.html#visit">오시는 길</a><a class="nav-cta" href="index.html#visit">처음 오셨나요?</a></div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="intro"><div><div class="eyebrow">Church Album</div><h1>교회 앨범</h1></div><p>함께 예배하고 나눈 순간들을 사진으로 담았습니다.<br>사진을 누르면 크게 볼 수 있어요.</p></div>
+    <div class="toolbar"><div class="filters" role="group" aria-label="앨범 분류">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">전체</button>
+      <button class="filter" type="button" data-filter="worship" aria-pressed="false">예배</button>
+      <button class="filter" type="button" data-filter="community" aria-pressed="false">공동체</button>
+      <button class="filter" type="button" data-filter="word" aria-pressed="false">말씀</button>
+    </div><span class="count" id="photo-count" aria-live="polite">사진 4장</span></div>
+
+    <div class="gallery" id="gallery">
+      <button class="photo-card" type="button" data-category="worship" data-title="함께 드리는 예배" data-credit="예시 사진 · Unsplash / Kaylee Stoll" aria-label="함께 드리는 예배 사진 크게 보기">
+        <img src="images/album/worship.jpg" alt="예시 사진: 예배 중인 교회 모습" loading="lazy"><span class="photo-info"><span class="photo-title">함께 드리는 예배</span><span class="photo-meta">예배 · 예시 사진</span></span>
+      </button>
+      <button class="photo-card" type="button" data-category="worship" data-title="예배 공간 둘러보기" data-credit="예시 사진 · Unsplash / Matt Benson" aria-label="예배 공간 둘러보기 사진 크게 보기">
+        <img src="images/album/sanctuary.jpg" alt="예시 사진: 예배당 내부" loading="lazy"><span class="photo-info"><span class="photo-title">예배 공간 둘러보기</span><span class="photo-meta">예배 · 예시 사진</span></span>
+      </button>
+      <button class="photo-card" type="button" data-category="community" data-title="소그룹 이야기 나눔" data-credit="예시 사진 · Unsplash / Small Group Network" aria-label="소그룹 이야기 나눔 사진 크게 보기">
+        <img src="images/album/community.jpg" alt="예시 사진: 소그룹으로 대화하는 사람들" loading="lazy"><span class="photo-info"><span class="photo-title">소그룹 이야기 나눔</span><span class="photo-meta">공동체 · 예시 사진</span></span>
+      </button>
+      <button class="photo-card" type="button" data-category="word" data-title="말씀을 함께 읽어요" data-credit="예시 사진 · Unsplash / Sixteen Miles Out" aria-label="말씀을 함께 읽어요 사진 크게 보기">
+        <img src="images/album/bible.jpg" alt="예시 사진: 펼쳐진 성경책" loading="lazy"><span class="photo-info"><span class="photo-title">말씀을 함께 읽어요</span><span class="photo-meta">말씀 · 예시 사진</span></span>
+      </button>
+    </div>
+    <p class="notice">사진은 앨범 화면 예시용 무료 사진입니다. 실제 교회 사진과 설명으로 바꿔 주세요. 사람이 나온 사진을 게시할 때는 먼저 동의를 확인해 주세요.</p>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span>© <span id="year"></span> 은혜교회</span><a href="index.html">홈으로 돌아가기</a></div></footer>
+
+  <dialog id="photo-viewer" aria-label="사진 크게 보기">
+    <div class="viewer"><button class="viewer-close" type="button" aria-label="닫기">×</button><img id="viewer-image" alt=""><div class="viewer-info"><div><strong id="viewer-title"></strong><span id="viewer-credit"></span></div><div class="viewer-controls"><button id="previous-photo" type="button" aria-label="이전 사진">‹</button><button id="next-photo" type="button" aria-label="다음 사진">›</button></div></div></div>
+  </dialog>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const cards = [...document.querySelectorAll('.photo-card')];
+    const filters = [...document.querySelectorAll('.filter')];
+    const count = document.getElementById('photo-count');
+    let activeFilter = 'all';
+    let visibleCards = cards;
+    let currentIndex = 0;
+    const dialog = document.getElementById('photo-viewer');
+    const viewerImage = document.getElementById('viewer-image');
+    const viewerTitle = document.getElementById('viewer-title');
+    const viewerCredit = document.getElementById('viewer-credit');
+
+    function applyFilter(value) {
+      activeFilter = value;
+      visibleCards = cards.filter(card => value === 'all' || card.dataset.category === value);
+      cards.forEach(card => { card.hidden = !visibleCards.includes(card); });
+      filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === value)));
+      count.textContent = `사진 ${visibleCards.length}장`;
+    }
+    function showPhoto(index) {
+      currentIndex = (index + visibleCards.length) % visibleCards.length;
+      const card = visibleCards[currentIndex];
+      const image = card.querySelector('img');
+      viewerImage.src = image.src;
+      viewerImage.alt = image.alt;
+      viewerTitle.textContent = card.dataset.title;
+      viewerCredit.textContent = card.dataset.credit;
+    }
+    filters.forEach(button => button.addEventListener('click', () => applyFilter(button.dataset.filter)));
+    cards.forEach(card => card.addEventListener('click', () => {
+      visibleCards = cards.filter(item => !item.hidden);
+      showPhoto(visibleCards.indexOf(card));
+      dialog.showModal();
+    }));
+    document.getElementById('previous-photo').addEventListener('click', () => showPhoto(currentIndex - 1));
+    document.getElementById('next-photo').addEventListener('click', () => showPhoto(currentIndex + 1));
+    document.querySelector('.viewer-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') showPhoto(currentIndex - 1);
+      if (event.key === 'ArrowRight') showPhoto(currentIndex + 1);
+    });
+  </script>
+</body>
+</html>
